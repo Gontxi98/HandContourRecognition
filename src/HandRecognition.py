@@ -19,39 +19,38 @@ def processImage(img):
             #Este bloque de código sirve para la deteccion del hueco entre dedos
             try:
                 defects = cv2.convexityDefects(contour, hull)
-                if defects is not None:
-                    cnt = 0
+                
             except:
                 print("puntos no monotomos")
                 continue
-
-
-            for i in range(defects.shape[0]):
-                s, e, f, d = defects[i][0]
-                try:
-                    start = tuple(contour[s][0])
-                    end = tuple(contour[e][0])
-                    far = tuple(contour[f][0])
-                except:
-                    print("algún punto fuera de rango")
-                    continue
-                a = np.sqrt((end[0] - start[0]) ** 2 + (end[1] - start[1]) ** 2)
-                b = np.sqrt((far[0] - start[0]) ** 2 + (far[1] - start[1]) ** 2)
-                c = np.sqrt((end[0] - far[0]) ** 2 + (end[1] - far[1]) ** 2)
-                angle = np.arccos((b ** 2 + c ** 2 - a ** 2) / (2 * b * c))  # Teorema del coseno
-                
-                if angle <= np.pi / 2:  # Si el angulo es menor que 90 es que hay hueco
-                    cnt += 1
-                    cv2.circle(img, far, 4, [0, 0, 255], -1)
-                    #cv2.circle(img, start, 4, [255, 0, 0], -1)
-                    #cv2.circle(img, end, 4, [255, 0, 0], -1)
-                    if hypot(start[0]-end[0], start[1]-end[1]) > 50 and hypot(far[0]-end[0], far[1]-end[1]) > 50:
-                                cv2.circle(img, far, 7, [0, 255, 0], -1)
-                                handLandmarks.append(start)
-                                handLandmarks.append(end)
-                if cnt > 0:
-                    cnt = cnt+1
-                cont = 0
+            if defects is not None:
+                cnt = 0
+                for i in range(defects.shape[0]):
+                    s, e, f, d = defects[i][0]
+                    try:
+                        start = tuple(contour[s][0])
+                        end = tuple(contour[e][0])
+                        far = tuple(contour[f][0])
+                    except:
+                        print("algún punto fuera de rango")
+                        continue
+                    a = np.sqrt((end[0] - start[0]) ** 2 + (end[1] - start[1]) ** 2)
+                    b = np.sqrt((far[0] - start[0]) ** 2 + (far[1] - start[1]) ** 2)
+                    c = np.sqrt((end[0] - far[0]) ** 2 + (end[1] - far[1]) ** 2)
+                    angle = np.arccos((b ** 2 + c ** 2 - a ** 2) / (2 * b * c))  # Teorema del coseno
+                    
+                    if angle <= np.pi / 2:  # Si el angulo es menor que 90 es que hay hueco
+                        cnt += 1
+                        cv2.circle(img, far, 4, [0, 0, 255], -1)
+                        #cv2.circle(img, start, 4, [255, 0, 0], -1)
+                        #cv2.circle(img, end, 4, [255, 0, 0], -1)
+                        if hypot(start[0]-end[0], start[1]-end[1]) > 50 and hypot(far[0]-end[0], far[1]-end[1]) > 50:
+                                    cv2.circle(img, far, 7, [0, 255, 0], -1)
+                                    handLandmarks.append(start)
+                                    handLandmarks.append(end)
+                    if cnt > 0:
+                        cnt = cnt+1
+                    cont = 0
             handLandmarks.sort()
             #print(PuntosDeDedo)
             handLandmarks2 = []
