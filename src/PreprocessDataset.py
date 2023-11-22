@@ -1,0 +1,25 @@
+import pandas as pd
+import numpy as np
+import os
+
+def split_records(dataFrame:pd.DataFrame) -> pd.DataFrame:
+    outDataFrame = dataFrame
+    return outDataFrame 
+
+def fuse_dataframes(path) -> pd.DataFrame:
+    outDf = None
+    for root, dirs, files in os.walk(path):
+        for name in files:
+            if name.endswith(".csv"):
+                if outDf is None:
+                    outDf = pd.read_csv(os.path.join(root, name))
+                else:
+                    print(os.path.join(root, name))
+                    np = os.path.join(root, name)
+                    tmpDf = pd.read_csv(np)
+                    outDf = pd.concat([outDf,tmpDf],ignore_index=True)
+    return outDf
+
+if __name__ == "__main__":
+    df = fuse_dataframes("./HandContourRecognition/")
+    print(df)
