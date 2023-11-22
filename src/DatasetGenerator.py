@@ -21,7 +21,8 @@ while success and cv2.waitKey(1) == -1:
     while now - start < 5:
         print(now - start )
         cv2.putText(frame,str(now-start),(20,20),fontFace=1,fontScale=20,color=(255,0,0))
-        cv2.imshow("MyWindow",frame)
+        _, img =HandRecognition.processImage(frame)
+        cv2.imshow("MyWindow",img)
         now = time.time()
         cv2.waitKey(1) == -1
         success, frame = cameraCapture.read()
@@ -36,14 +37,19 @@ while success and cv2.waitKey(1) == -1:
 
     print(handLandmark)
     lastRowIndex = len(dataFrame)
-    handLandmark.append(1)
+    handLandmark.append(3)
     print(len(handLandmark))
+    #Aquí estamos rellenando el data frame con los datos asociados a un gesto
     if(len(handLandmark) <= 10):
         dataFrame.loc[lastRowIndex] = handLandmark
-    #cv2.drawKeypoints(frame,handLandmark,frame,color=(0,0,255))
+
+    
     cv2.imshow("MyWindow",img)
     cv2.imshow("ROI",roi)
     success, frame = cameraCapture.read()
 print(dataFrame)
+#Aquí deberíamos escribir el dataFrame asociado a una acción (Antes igual hay que normalizar los datos para ser menos dependientes de la camara)
+
+dataFrame.to_csv("./HandContourRecognition/DataSet/action_{}.csv".format(3))
 cv2.destroyWindow('MyWindow')
 cameraCapture.release()
