@@ -9,7 +9,6 @@ def split_records(dataFrame:pd.DataFrame) -> pd.DataFrame:
             dataFrame = dataFrame.applymap(lambda x: x.strip('()') if isinstance(x, str) else x)
             splited = dataFrame[col].str.split(",")
             splited = splited.apply(pd.Series)
-
             outDataFrame[col+"X"] = splited[0]
             outDataFrame[col+"Y"] = splited[1]
             del outDataFrame[col]
@@ -37,3 +36,4 @@ if __name__ == "__main__":
     #print(df)
     splited = split_records(df)
     print(splited)
+    splited.to_csv("./HandContourRecognition/Dataset/unified.csv")
