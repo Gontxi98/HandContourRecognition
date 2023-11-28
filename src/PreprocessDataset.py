@@ -37,3 +37,4 @@ if __name__ == "__main__":
     splited = split_records(df)
     print(splited)
     splited.to_csv("./HandContourRecognition/Dataset/unified.csv")
+    print(splited[])
