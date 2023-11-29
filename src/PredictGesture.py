@@ -14,6 +14,7 @@ print('Showing camera feed.')
 dataFrame = pd.DataFrame(data=[], columns=['P1','P2','P3','P4','P5','P6','P7','P8','P9','Gesto'])
 print(dataFrame)
 img = []
+predictor = TrainML.GesturePredictor()
 success, frame = cameraCapture.read()
 start = time.time()
 while success and cv2.waitKey(1) == -1:
@@ -39,8 +40,7 @@ while success and cv2.waitKey(1) == -1:
             to_predict.append(landmarkd[0])
             to_predict.append(landmarkd[1])
         print(to_predict)
-        y_pred = TrainML.predict_gesture([to_predict])
-        
+        y_pred = predictor.predict_gesture([to_predict])
         print(y_pred)
     cv2.putText(img,str(y_pred),(20,20),color=(0,0,255),fontFace=cv2.FONT_HERSHEY_SIMPLEX ,thickness=2 , fontScale= 1)
     cv2.imshow("MyWindow",img)
