@@ -37,8 +37,8 @@ while success and cv2.waitKey(1) == -1:
     if len(handLandmark) <= 9:
         to_predict = []
         for landmarkd in handLandmark:
-            to_predict.append(landmarkd[0])
-            to_predict.append(landmarkd[1])
+            to_predict.append(landmarkd[0]/600)
+            to_predict.append(landmarkd[1]/600)
         print(to_predict)
         y_pred = predictor.predict_gesture([to_predict])
         print(y_pred)
